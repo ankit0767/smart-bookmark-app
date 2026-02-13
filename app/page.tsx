@@ -13,6 +13,10 @@ export default function LoginPage() {
       provider: 'google',
       options: {
         redirectTo: `${location.origin}/auth/callback`,
+        // This forces Google to show the account picker every time
+        queryParams: {
+          prompt: 'select_account',
+        },
       },
     })
 

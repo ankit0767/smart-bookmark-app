@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Smart Bookmark Vault
 
-## Getting Started
+A premium, full-stack web application designed to help users securely store and manage their digital discoveries. Built with **Next.js 15**, **Supabase**, and **Tailwind CSS**.
 
-First, run the development server:
+## 🌟 Features
+- **Google OAuth Integration**: Secure, passwordless login.
+- **Real-time CRUD**: Add and delete bookmarks with instant UI updates.
+- **Row-Level Security (RLS)**: Each user can only access their own private data.
+- **Premium UI/UX**: Modern dark-mode aesthetic with glassmorphism and mesh gradients.
+- **Middleware Protected**: Automatic redirection for unauthenticated users.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack
+- **Framework**: Next.js 15 (App Router)
+- **Database & Auth**: Supabase
+- **Styling**: Tailwind CSS
+- **Deployment**: Vercel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧠 Challenges & Solutions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+During the development of this project, I encountered several technical hurdles. Here is how I approached and solved them:
 
-## Learn More
+### 1. Row-Level Security (RLS) Violations
+**Problem:** Initially, when attempting to add a bookmark, the database returned a `new row violates row-level security policy` error.
+**Solution:** I realized the Supabase policy required a `user_id` to match the authenticated user's ID. I updated the frontend logic to fetch the active session's `user.id` using the Supabase client and explicitly include it in the `insert` payload.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. OAuth Configuration & Callback Logic
+**Problem:** Setting up Google OAuth required precise matching of redirect URIs between Google Cloud Console and Supabase.
+**Solution:** I configured an internal `/auth/callback` route using Next.js Route Handlers to exchange the temporary auth code for a permanent session, ensuring a seamless handshake between the provider and the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. State Management vs. Database Sync
+**Problem:** Ensuring the UI updated instantly without requiring a full page refresh after adding or deleting a bookmark.
+**Solution:** I implemented optimistic-style state updates using React's `useState` hook, filtering or spreading the local state array immediately after a successful database response.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
+## 🚀 How to Run Locally
 
-## Deploy on Vercel
+1. **Clone the repository**:
+   `git clone https://github.com/ankit0767/smart-bookmark-app.git`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies**:
+   `npm install`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Set up environment variables**:
+   - Rename `.env.example` to `.env.local`.
+   - Add your [Supabase](https://supabase.com) project URL and Anon Key.
+
+4. **Run the development server**:
+   `npm run dev`
